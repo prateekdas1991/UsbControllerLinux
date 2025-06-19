@@ -11,10 +11,10 @@
  *   - Requires adb installed for device detection
  *   - Must run with sudo privileges for sysfs modification
  *
- * Author: Prateek Das prtkds@gmail.com
+ * Author: Prateek Das prateek.das1991@gmail.com
  */
 
-package com.prateek.usbcontroller;
+package io.github.prateekdas1991;
 
 import java.io.BufferedReader;
 import java.io.File;

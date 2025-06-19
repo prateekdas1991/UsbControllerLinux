@@ -5,13 +5,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.prateek</groupId>
+  <groupId>io.github.prateekdas1991</groupId>
   <artifactId>usbcontroller</artifactId>
   <version>0.0.1</version>
   <packaging>jar</packaging>
   <name>usbcontroller</name>
   <description>Java utility for enabling/disabling USB ports via sysfs, using device serial ID</description>
-  <url>https://github.com/prateek/usbcontroller</url>
+  <url>https://github.com/prateekdas1991/UsbControllerLinux</url>
 
   <licenses>
     <license>
@@ -29,10 +29,11 @@
     </developer>
   </developers>
 
+
   <scm>
-    <url>https://github.com/prateek/usbcontroller</url>
-    <connection>scm:git:git://github.com/prateek/usbcontroller.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:prateek/usbcontroller.git</developerConnection>
+    <url>https://github.com/prateekdas1991/UsbControllerLinux</url>
+    <connection>scm:git:git://github.com/prateekdas1991/UsbControllerLinux.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:prateekdas1991/UsbControllerLinux.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
