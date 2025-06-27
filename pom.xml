@@ -7,7 +7,7 @@
 
   <groupId>io.github.prateekdas1991</groupId>
   <artifactId>usbcontroller</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
   <name>usbcontroller</name>
   <description>Java utility for enabling/disabling USB ports via sysfs, using device serial ID</description>
@@ -79,6 +79,16 @@
 		  </executions>
 		</plugin>
 
+
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.8.0</version>
+          <extensions>true</extensions>
+          <configuration>
+            <publishingServerId>central</publishingServerId>
+          </configuration>
+        </plugin>
     </plugins>
   </build>
   
@@ -93,7 +103,6 @@
 	    </properties>
 	  </profile>
 	</profiles>
-
 	<distributionManagement>
 	  <snapshotRepository>
 	    <id>ossrh</id>

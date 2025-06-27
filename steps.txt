@@ -1,0 +1,5 @@
+To Verify:
+"mvn clean verify -P release" 
+
+To publish:
+"mvn clean deploy -P release" 

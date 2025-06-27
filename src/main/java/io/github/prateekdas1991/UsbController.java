@@ -35,7 +35,8 @@ public class UsbController {
 
 	public static void main(String[] args) {
 		parseArgs(args);
-		run(serial, enable, disable);
+		UsbController controller = new UsbController();
+		controller.run(serial, enable, disable);
 	}
 	
 	/**
@@ -45,7 +46,7 @@ public class UsbController {
 	 * @param enable  true to enable the device, false to disable
 	 * @param disable true to disable the device, false to enable
 	 */
-	public static void run(String serial, boolean enable, boolean disable) {
+	public void run(String serial, boolean enable, boolean disable) {
 		String usbRealPath = "";
 		File statusFile = new File(serial+".disabled");
 		if(enable) {
@@ -62,67 +63,67 @@ public class UsbController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.exit(0);
 		}
-		
-		String bus = null, device = null;
-		
-		olist = runCommand("adb devices -l");
-		for(String str: olist) {
-			System.out.println(str);
-		}
-		String usbid = olist.stream()
-				.filter(x->x.contains(serial))
-				.map(x->x.substring(x.indexOf("usb:")+4, x.indexOf("product")))
-				.collect(Collectors.toList()).get(0);
-		System.out.println("UsbId: "+usbid);
-		
-		olist.clear();
-		
-		olist= runCommand("lsusb -v|grep -Ei \"Bus .*Device |iserial\"");
-		
-		String strTemp = null;
-		for(String str: olist) {
-			if(str.contains("Bus") && str.contains("Device")) {
-				strTemp = str;
+		else {
+			String bus = null, device = null;
+			
+			olist = runCommand("adb devices -l");
+			for(String str: olist) {
+				System.out.println(str);
 			}
-			if(str.contains("iSerial") && str.contains(serial)) {
-				if(strTemp!=null) {
-					String[] strSp = strTemp.split(":")[0].split("\\s");
-					bus = strSp[1];
-					device = strSp[3];
+			String usbid = olist.stream()
+					.filter(x->x.contains(serial))
+					.map(x->x.substring(x.indexOf("usb:")+4, x.indexOf("product")))
+					.collect(Collectors.toList()).get(0);
+			System.out.println("UsbId: "+usbid);
+			
+			olist.clear();
+			
+			olist= runCommand("lsusb -v|grep -Ei \"Bus .*Device |iserial\"");
+			
+			String strTemp = null;
+			for(String str: olist) {
+				if(str.contains("Bus") && str.contains("Device")) {
+					strTemp = str;
 				}
-				break;
+				if(str.contains("iSerial") && str.contains(serial)) {
+					if(strTemp!=null) {
+						String[] strSp = strTemp.split(":")[0].split("\\s");
+						bus = strSp[1];
+						device = strSp[3];
+					}
+					break;
+				}
 			}
-		}
-		
-		olist.clear();
-		
-		if(bus!=null && device!=null) {
-			System.out.println("Bus: "+bus+" Device: "+device);
-		}
-		
-		olist.clear();
-		
-		Path usbSysPath = Paths.get("/sys/bus/usb/devices/",usbid.trim(),"port","disable");
-		
-		try {
-			usbRealPath = usbSysPath.toRealPath().toString();
-			System.out.println(usbSysPath + " "+usbRealPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		if(disable) {
-			System.out.println("Disabling the device..");
-			disableDevice(usbRealPath);
+			
+			olist.clear();
+			
+			if(bus!=null && device!=null) {
+				System.out.println("Bus: "+bus+" Device: "+device);
+			}
+			
+			olist.clear();
+			
+			Path usbSysPath = Paths.get("/sys/bus/usb/devices/",usbid.trim(),"port","disable");
+			
 			try {
-				FileWriter fw = new FileWriter(serial+".disabled");
-				fw.write(usbRealPath);
-				fw.flush();
-				fw.close();
+				usbRealPath = usbSysPath.toRealPath().toString();
+				System.out.println(usbSysPath + " "+usbRealPath);
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+			
+			if(disable) {
+				System.out.println("Disabling the device..");
+				disableDevice(usbRealPath);
+				try {
+					FileWriter fw = new FileWriter(serial+".disabled");
+					fw.write(usbRealPath);
+					fw.flush();
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
